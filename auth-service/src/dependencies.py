@@ -2,7 +2,9 @@ from typing import TypeVar
 
 from injector import Injector, SingletonScope
 
-from conf.settings import settings
+from src.domain.interfaces import ORMInterface, UserRepositoryInterface
+from src.infrastructure.database.repositories import UserRepository
+from src.infrastructure.database.orms import SQLModelORM
 
 
 injector = Injector()
@@ -21,7 +23,21 @@ def bind_dependencies() -> None:
     This setup allows for dependency injection throughout the application, ensuring
     that the correct implementations are used where needed.
     """
-    pass
+    # ------- bind ORM dependencies -------
+    injector.binder.bind(
+        interface=ORMInterface,
+        to=SQLModelORM,
+        scope=SingletonScope,
+    )
+
+    # ------- bind User Service dependencies -------
+
+    # Repositories
+    injector.binder.bind(
+        interface=UserRepositoryInterface,
+        to=UserRepository,
+        scope=SingletonScope,
+    )
 
 
 def get(interface: type[T]) -> T:

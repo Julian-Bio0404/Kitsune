@@ -8,15 +8,21 @@ class Settings(BaseSettings):
     """Settings singleton class."""
 
     # ----- Postgres ----- #
-    postgres_db: str
-    postgres_user: str
-    postgres_password: str
-    postgres_host: str
-    postgres_port: str
+    postgres_db: str = None
+    postgres_user: str = None
+    postgres_password: str = None
+    postgres_host: str = None
+    postgres_port: str = None
+    postgres_url: str = (
+        f"postgresql://{postgres_user}:"
+        f"{postgres_password}@"
+        f"{postgres_host}/"
+        f"{postgres_db}"
+    )
 
     # ----- JWT ----- #
-    secret: str
-    token_lifetime: int
+    secret: str = None
+    token_lifetime: int = None
 
     class Config:
         """Config options."""
