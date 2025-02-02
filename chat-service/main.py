@@ -4,14 +4,18 @@ from fastapi_injector import attach_injector
 from src import dependencies
 from src.infrastructure.api import router
 
-app = FastAPI()
+
+async def lifespan(app: FastAPI):
+    """Execute migrations."""
+    await dependencies.migrate()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 # Initialize dependency injection
 dependencies.bind_dependencies()
 attach_injector(app, dependencies.injector)
-
-# Execute migrations
-dependencies.migrate()
 
 # Include default router
 app.include_router(router=router.api_router, prefix="/api")

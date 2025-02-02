@@ -9,7 +9,7 @@ class StoreMessageDTO(BaseModel):
     """Store Message DTO."""
 
     sender_id: UUID
-    receive_id: UUID
+    receiver_id: UUID
     text: str
     created: datetime
     updated: datetime

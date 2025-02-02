@@ -12,9 +12,9 @@ class StoreMessageService:
     def __init__(self, message_repository: MessageRepositoryInterface) -> None:
         self.message_repository = message_repository
 
-    def execute(self, dto: StoreMessageDTO) -> Message:
+    async def execute(self, dto: StoreMessageDTO) -> Message:
         """Store a message in database."""
         data = dto.data
         entity = Message(**data)
-        message = self.message_repository.create(entity=entity)
+        message = await self.message_repository.create(entity=entity)
         return message

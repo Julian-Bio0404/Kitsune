@@ -19,7 +19,7 @@ class BeanieODM(ODMInterface[Entity]):
 
     async def connect(self, document_models: list[Entity]) -> None:
         """Init beanie ODM with the document models."""
-        init_beanie(database=self.engine.db_name, document_models=document_models)
+        await init_beanie(database=self.engine.db_name, document_models=document_models)
 
     async def create(self, entity: Document) -> Entity:
         """Insert a entity in database."""
