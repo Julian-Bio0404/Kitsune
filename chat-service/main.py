@@ -1,10 +1,7 @@
 from fastapi import FastAPI
 
+from src.infrastructure.api import router
+
 
 app = FastAPI()
-
-
-@app.get('/club-chat')
-async def hello_world():
-    """Render club chat template."""
-    return {"message": "Hello World!"}
+app.include_router(router=router.api_router, prefix="/api")
