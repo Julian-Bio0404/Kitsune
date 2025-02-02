@@ -8,17 +8,11 @@ class Settings(BaseSettings):
     """Settings singleton class."""
 
     # ----- Postgres ----- #
-    postgres_db: str = None
-    postgres_user: str = None
-    postgres_password: str = None
-    postgres_host: str = None
-    postgres_port: str = None
-    postgres_url: str = (
-        f"postgresql://{postgres_user}:"
-        f"{postgres_password}@"
-        f"{postgres_host}/"
-        f"{postgres_db}"
-    )
+    postgres_db: str
+    postgres_user: str
+    postgres_password: str
+    postgres_host: str
+    postgres_port: str
 
     # ----- JWT ----- #
     secret: str = None
@@ -37,3 +31,10 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
+
+POSTGRES_URL = (
+    f"postgresql://{settings.postgres_user}:"
+    f"{settings.postgres_password}@"
+    f"{settings.postgres_host}/"
+    f"{settings.postgres_db}"
+)

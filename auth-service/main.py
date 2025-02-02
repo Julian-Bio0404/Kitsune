@@ -10,5 +10,8 @@ app = FastAPI()
 dependencies.bind_dependencies()
 attach_injector(app, dependencies.injector)
 
+# Execute migrations
+dependencies.migrate()
+
 # Include default router
 app.include_router(router=router.api_router, prefix="/api")

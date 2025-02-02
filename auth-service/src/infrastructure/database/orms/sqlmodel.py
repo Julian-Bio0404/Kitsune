@@ -5,7 +5,7 @@ from sqlalchemy import Sequence
 from sqlalchemy.engine import Row
 from sqlmodel import Session, create_engine
 
-from conf.settings import settings
+from conf.settings import POSTGRES_URL
 from src.domain.interfaces import ORMInterface
 
 
@@ -16,7 +16,7 @@ class SQLModelORM(ORMInterface[Entity]):
     """SQLModel ORM implementation."""
 
     def __init__(self) -> None:
-        self.db_url = settings.postgres_url
+        self.db_url = POSTGRES_URL
         self.engine = create_engine(self.db_url)
 
     @contextmanager

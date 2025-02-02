@@ -1,7 +1,10 @@
 from typing import TypeVar
 
 from injector import Injector, SingletonScope
+from sqlmodel import SQLModel, create_engine
 
+from conf.settings import POSTGRES_URL
+from src.domain.entities import User  # NOQA W0611
 from src.domain.interfaces import ORMInterface, UserRepositoryInterface
 from src.infrastructure.database.repositories import UserRepository
 from src.infrastructure.database.orms import SQLModelORM
@@ -60,3 +63,12 @@ def create_object(cls: type[T]) -> T:
     The injector resolves and provides the necessary dependencies.
     """
     return injector.create_object(cls)
+
+
+def migrate() -> None:
+    """
+    Take all imported models and migrate
+    them to the database.
+    """
+    engine = create_engine(POSTGRES_URL, echo=True)
+    SQLModel.metadata.create_all(engine)
