@@ -1,12 +1,12 @@
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class UserLoginSchema(BaseModel):
     """User login schema."""
 
-    email: str
+    email: EmailStr
     password: str
 
     @property

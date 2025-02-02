@@ -25,6 +25,17 @@ class UserRepository(UserRepositoryInterface):
         user = self.orm.save(entity=entity)
         return user
 
+    def get(self, expression: Any) -> User:
+        """Get a user by statement."""
+        statement = select(User).where(expression)
+        results = self.orm.execute(statement=statement)
+        if len(results) > 1:
+            # TODO: Create custom exception
+            raise Exception("Query return multiple results")
+
+        user = results[0]
+        return user
+
     def filter(self, expression: Any) -> Iterable[User]:
         """Filter users by statement."""
         statement = select(User).where(expression)

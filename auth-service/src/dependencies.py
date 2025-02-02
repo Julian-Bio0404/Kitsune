@@ -1,7 +1,7 @@
 from typing import TypeVar
 
 from injector import Injector, SingletonScope
-from sqlmodel import SQLModel, create_engine
+from sqlmodel import SQLModel, create_engine, inspect
 
 from conf.settings import POSTGRES_URL
 from src.domain.entities import User  # NOQA W0611
@@ -71,4 +71,12 @@ def migrate() -> None:
     them to the database.
     """
     engine = create_engine(POSTGRES_URL, echo=True)
-    SQLModel.metadata.create_all(engine)
+    inspector = inspect(engine)
+
+    tables = inspector.get_table_names()
+    models = SQLModel.metadata.tables.keys()
+
+    models_to_migrate = [table for table in tables if table not in models]
+
+    if models_to_migrate:
+        SQLModel.metadata.create_all(engine)

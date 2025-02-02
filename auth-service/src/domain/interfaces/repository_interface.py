@@ -19,3 +19,6 @@ class RepositoryInterface(ABC):
 
     @abstractmethod
     def filter(self, expression: Any) -> Iterable[Entity]: ...
+
+    @abstractmethod
+    def get(self, expression: Any) -> Entity: ...

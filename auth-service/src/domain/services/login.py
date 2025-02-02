@@ -14,5 +14,5 @@ class LoginService:
 
     def execute(self, dto: LoginDTO) -> User:
         """Return a user by email."""
-        user = self.user_repository.get(email=dto.email)
+        user = self.user_repository.get(User.email == dto.email)
         return user
