@@ -1,8 +1,7 @@
 from contextlib import contextmanager
 from typing import Any, Generator, TypeVar
 
-from sqlalchemy import Sequence
-from sqlalchemy.engine import Row
+from sqlalchemy.engine.result import ScalarResult
 from sqlmodel import Session, create_engine
 
 from conf.settings import POSTGRES_URL
@@ -29,32 +28,24 @@ class SQLModelORM(ORMInterface[Entity]):
         session = Session(self.engine)
         try:
             yield session
-            session.commit()
         except Exception as e:
             session.rollback()
             raise e
         finally:
             session.close()
 
-    def execute(self, statement: Any) -> Sequence[Row[Any]]:
+    def execute(self, statement: Any) -> ScalarResult[Any]:
         """Execute a SQL statement and return the results."""
         with self.connect() as session:
             session: Session
-            result = session.exec(statement=statement)
-            return result
+            results = session.exec(statement=statement).all()
+            return results
 
-    def insert(self, entity: Entity) -> Entity:
-        """Insert a entity in database."""
+    def save(self, entity: Entity) -> Entity:
+        """Insert or update a entity in database."""
         with self.connect() as session:
             session: Session
             session.add(entity)
-        return entity
-
-    def update(self, entity: Entity) -> Entity:
-        """Update a entity from database."""
-        with self.connect() as session:
-            session: Session
-            session.add(entity)
+            session.commit()
             session.refresh(entity)
-
         return entity

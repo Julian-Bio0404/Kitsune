@@ -17,12 +17,12 @@ class UserRepository(UserRepositoryInterface):
 
     def create(self, entity: User) -> User:
         """Store a user in database."""
-        user = self.orm.insert(entity=entity)
+        user = self.orm.save(entity=entity)
         return user
 
     def update(self, entity: User) -> User:
-        """Update a user."""
-        user = self.orm.update(entity=entity)
+        """Update a user in database."""
+        user = self.orm.save(entity=entity)
         return user
 
     def filter(self, expression: Any) -> Iterable[User]:
