@@ -1,4 +1,5 @@
 from typing import Any, Iterable
+from uuid import UUID
 
 from injector import inject
 
@@ -24,7 +25,22 @@ class MessageRepository(MessageRepositoryInterface):
         message = await self.odm.update(entity=entity)
         return message
 
-    async def filter(self, entity: Message, expression: Any) -> Iterable[Message]:
+    async def filter(self, expression: Any) -> Iterable[Message]:
         """Filter messages by statement."""
-        messages = await self.odm.filter(entity=entity, statement=expression)
+        messages = await self.odm.filter(entity=Message, statement=expression)
+        return messages.to_list()
+
+    async def filter_by_sender_and_receiver(
+        self,
+        sender_id: UUID,
+        receiver_id: UUID,
+    ):
+        """Filter messages by sender and receiver."""
+        expression = {
+            "$and": [
+                {"sender_id": {"$in": [sender_id, receiver_id]}},
+                {"receiver_id": {"$in": [sender_id, receiver_id]}}
+            ]
+        }
+        messages = await self.odm.filter(entity=Message, statement=expression)
         return messages.to_list()

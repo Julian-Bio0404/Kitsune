@@ -1,10 +1,8 @@
-from datetime import datetime
-
 from fastapi import APIRouter, WebSocket
 from fastapi.encoders import jsonable_encoder
 
 from src.dependencies import create_object
-from src.domain.dtos import StoreMessageDTO
+from src.domain.dtos import ReadMessageDTO, StoreMessageDTO
 from src.domain.services import ReadMessageService, StoreMessageService
 from src.infrastructure.api.v1.schemas import SendMessageSchema, MessageSchema
 
@@ -20,7 +18,11 @@ async def messages(
 
     # Send previous messages
     service = create_object(cls=ReadMessageService)
-    _messages = await service.execute()
+    dto = ReadMessageDTO(
+        sender_id="b84e4b39-50f1-4a2b-a86b-68b9123fdc96",
+        receiver_id=id,
+    )
+    _messages = await service.execute(dto=dto)
     data = jsonable_encoder([MessageSchema(**m.data).data for m in _messages])
 
     await websocket.accept()
