@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 from uuid import UUID, uuid4
 
 from beanie import Document
@@ -12,9 +13,14 @@ class Message(Document):
     sender_id: UUID
     receiver_id: UUID
     text: str
-    created: datetime
-    updated: datetime
+    created: datetime = Field(default_factory=datetime.now)
+    updated: datetime = Field(default_factory=datetime.now)
 
     class Settings:
         """Setting options."""
         name = "messages"
+
+    @property
+    def data(self) -> dict[str, Any]:
+        """Return attributes as dict"""
+        return self.model_dump()

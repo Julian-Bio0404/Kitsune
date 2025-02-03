@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Any
 from uuid import UUID
 
@@ -11,8 +10,6 @@ class StoreMessageDTO(BaseModel):
     sender_id: UUID
     receiver_id: UUID
     text: str
-    created: datetime
-    updated: datetime
 
     @property
     def data(self) -> dict[str, Any]:

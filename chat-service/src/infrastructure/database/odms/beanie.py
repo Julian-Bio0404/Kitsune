@@ -23,7 +23,7 @@ class BeanieODM(ODMInterface[Entity]):
 
     async def create(self, entity: Document) -> Entity:
         """Insert a entity in database."""
-        await entity.create()
+        return await entity.create()
 
     async def update(self, entity: Document) -> Entity:
         """Update a entity in database."""
@@ -31,4 +31,4 @@ class BeanieODM(ODMInterface[Entity]):
 
     async def filter(self, entity: Document, statement: Any):
         """Execute a NO-SQL statement and return the results."""
-        await entity.find(statement)
+        return entity.find(statement)
