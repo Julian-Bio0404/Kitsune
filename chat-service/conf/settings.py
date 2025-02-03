@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     mongo_host: str
     mongo_port: str
 
+    # ----- Authentication service ----- #
+    authentication_service_url: str
+
     class Config:
         """Config options."""
 

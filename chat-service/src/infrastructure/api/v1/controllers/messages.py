@@ -15,11 +15,12 @@ async def messages(
     id: str,
 ):
     """Send or get messages user <-> user."""
+    user = websocket.scope["user"]
 
     # Send previous messages
     service = create_object(cls=ReadMessageService)
     dto = ReadMessageDTO(
-        sender_id="b84e4b39-50f1-4a2b-a86b-68b9123fdc96",
+        sender_id=user["id"],
         receiver_id=id,
     )
     _messages = await service.execute(dto=dto)
@@ -34,7 +35,7 @@ async def messages(
         schema = SendMessageSchema(**data[0])
 
         dto = StoreMessageDTO(
-            sender_id="b84e4b39-50f1-4a2b-a86b-68b9123fdc96",
+            sender_id=user["id"],
             receiver_id=id,
             text=schema.text,
         )
