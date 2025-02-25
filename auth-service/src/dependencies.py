@@ -75,8 +75,12 @@ def migrate() -> None:
 
     tables = inspector.get_table_names()
     models = SQLModel.metadata.tables.keys()
+    print(tables)
+    print(models)
 
-    models_to_migrate = [table for table in tables if table not in models]
+    models_to_migrate = [model for model in models if model not in tables]
+    print("estoy migrando la DB")
+    print(models_to_migrate)
 
     if models_to_migrate:
         SQLModel.metadata.create_all(engine)

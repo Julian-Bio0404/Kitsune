@@ -9,13 +9,13 @@ app = FastAPI()
 
 # Initialize dependency injection
 dependencies.bind_dependencies()
-attach_injector(app, dependencies.injector)
+attach_injector(app=app, injector=dependencies.injector)
 
 # Execute migrations
 dependencies.migrate()
 
 # Include default router
-app.include_router(router=router.api_router, prefix="/api")
+app.include_router(router=router.api_router)
 
 
 # TODO: Create custom exceptions
